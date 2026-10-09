@@ -1,0 +1,5 @@
+Mi Gamarra - Prototipo APF2
+1) Abrir la carpeta en Visual Studio Code.
+2) Clic derecho en index.html > Open with Live Server (o doble clic para abrirlo en el navegador).
+Despliegue gratis: arrastrar la carpeta a netlify.com/drop
+Datos de prueba: cupon GAMARRA10 | tarjeta 4111 1111 1111 1111 | Yape: cel 9xxxxxxxx, codigo 123456

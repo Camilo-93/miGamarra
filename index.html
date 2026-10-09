@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mi Gamarra · Prototipo APF2</title>
+<style>
+:root{--bg:#f4f5f8;--card:#fff;--tx:#161a2b;--mut:#6b7185;--pri:#2a45ee;--pri2:#e8ecff;--acc:#e91e7a;--ok:#16a34a;--err:#dc2626;--bd:#e3e6ee;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1019;--card:#181b29;--tx:#eef0f8;--mut:#99a0b8;--pri:#6f84ff;--pri2:#222a52;--bd:#2a2f45}}
+:root[data-theme="dark"]{--bg:#0e1019;--card:#181b29;--tx:#eef0f8;--mut:#99a0b8;--pri:#6f84ff;--pri2:#222a52;--bd:#2a2f45}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{background:#cfd3df;font:14px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--tx);display:flex;justify-content:center;align-items:center}
+#phone{position:relative;width:100%;height:100%;max-width:420px;background:var(--bg);display:flex;flex-direction:column;overflow:hidden}
+@media(min-width:520px){#phone{height:min(100%,840px);border-radius:28px;box-shadow:0 20px 60px #0005}}
+#scr{flex:1;display:flex;flex-direction:column;min-height:0}
+.hd{display:flex;align-items:center;gap:8px;padding:12px 14px;background:var(--card);border-bottom:1px solid var(--bd);font-weight:700;font-size:16px}
+.hd .t{flex:1}
+.mn{flex:1;overflow-y:auto;padding:14px}
+.ft{padding:10px 14px;background:var(--card);border-top:1px solid var(--bd)}
+button{font:inherit;cursor:pointer;border:0;color:inherit;background:none}
+button:focus-visible,input:focus-visible{outline:3px solid var(--pri);outline-offset:2px}
+.ic{width:36px;height:36px;border-radius:50%;background:var(--bg);font-size:18px}
+.btn{width:100%;padding:13px;border-radius:12px;background:var(--pri);color:#fff;font-weight:700;font-size:15px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.sec{background:var(--pri2);color:var(--pri)}
+.btn.ghost{background:var(--card);color:var(--tx);border:1.5px solid var(--pri)}
+.logo{background:linear-gradient(90deg,var(--pri),var(--acc));-webkit-background-clip:text;background-clip:text;color:transparent;font-size:20px;font-weight:800}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:12px;margin-bottom:12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pc{background:var(--card);border:1px solid var(--bd);border-radius:12px;overflow:hidden;text-align:left;width:100%}
+.pc .im{aspect-ratio:1;display:grid;place-items:center;background:var(--pri2)}
+.pc .im svg{width:62%}
+.pc .in{padding:8px}.pc b{display:block;font-size:13px}
+.price{font-weight:800}
+.mut{color:var(--mut);font-size:12px}
+.sec-t{font-weight:800;margin:14px 0 8px;font-size:15px}
+input[type=text],input[type=tel],input[type=search]{width:100%;padding:12px;border:1.5px solid var(--bd);border-radius:10px;background:var(--card);color:var(--tx);font:inherit}
+input.bad{border-color:var(--err)}
+.er{color:var(--err);font-size:12px;margin-top:4px;display:block}
+label.l{display:block;font-weight:600;font-size:13px;margin:10px 0 4px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin:10px 0}
+.chip{padding:7px 14px;border-radius:99px;border:1.5px solid var(--bd);background:var(--card);white-space:nowrap}
+.chip.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.sz{min-width:52px;padding:10px;border:1.5px solid var(--bd);border-radius:10px;background:var(--card);font-weight:700}
+.sz.on{border-color:var(--acc);box-shadow:inset 0 -3px 0 var(--acc)}
+.sz:disabled{opacity:.4;text-decoration:line-through;cursor:not-allowed}
+.sw{width:40px;height:40px;border-radius:50%;border:3px solid var(--card);box-shadow:0 0 0 1.5px var(--bd)}
+.sw.on{box-shadow:0 0 0 2.5px var(--acc)}
+.row{display:flex;align-items:center;gap:10px}.sp{justify-content:space-between}
+.stp{display:flex;align-items:center;border:1.5px solid var(--bd);border-radius:10px;background:var(--card)}
+.stp button{width:34px;height:34px;font-size:18px;font-weight:700}.stp span{min-width:26px;text-align:center;font-weight:700}
+#nav{display:flex;background:var(--card);border-top:1px solid var(--bd)}
+#nav button{flex:1;padding:8px 0 10px;font-size:11px;color:var(--mut);position:relative}
+#nav button.on{color:var(--pri);font-weight:700}#nav i{display:block;font-style:normal;font-size:20px}
+.bdg{position:absolute;top:2px;left:55%;background:var(--acc);color:#fff;border-radius:99px;min-width:18px;height:18px;font-size:11px;font-weight:700;display:grid;place-items:center;font-style:normal}
+.bump{animation:bump .5s}@keyframes bump{40%{transform:scale(1.6)}}
+#toast{position:absolute;left:12px;right:12px;bottom:76px;background:#161a2b;color:#fff;padding:12px 14px;border-radius:12px;display:flex;gap:10px;align-items:center;transform:translateY(30px);opacity:0;pointer-events:none;transition:.25s;z-index:5}
+#toast.show{transform:none;opacity:1;pointer-events:auto}
+#toast button{margin-left:auto;color:#9fb0ff;font-weight:700}
+.note{background:var(--pri2);color:var(--tx);border-radius:10px;padding:10px;font-size:12px;display:flex;gap:8px}
+.ok{color:var(--ok)}
+.sk{background:linear-gradient(90deg,var(--bd),var(--card),var(--bd));background-size:200% 100%;animation:sh 1s infinite;border-radius:12px;aspect-ratio:1/1.25}@keyframes sh{to{background-position:-200% 0}}
+.empty{text-align:center;padding:40px 20px;color:var(--mut)}.empty b{display:block;font-size:42px}
+.ov{position:absolute;inset:0;background:#000a;display:grid;place-items:center;z-index:9;color:#fff;text-align:center}
+.spin{width:44px;height:44px;border:5px solid #fff4;border-top-color:#fff;border-radius:50%;animation:rot 1s linear infinite;margin:0 auto 12px}@keyframes rot{to{transform:rotate(360deg)}}
+.tabs{display:flex;background:var(--bg);border-radius:10px;padding:3px;margin-bottom:10px}.tabs button{flex:1;padding:9px;border-radius:8px;font-weight:700;color:var(--mut)}.tabs .on{background:var(--card);color:var(--pri)}
+.hint{font-size:11px;color:var(--mut);margin-top:8px;background:var(--bg);padding:8px;border-radius:8px}
+.ok-ring{width:84px;height:84px;border-radius:50%;background:var(--ok);color:#fff;font-size:44px;display:grid;place-items:center;margin:20px auto 12px}
+</style>
+</head>
+<body>
+<div id="phone"><div id="scr"></div>
+<nav id="nav" aria-label="Navegación principal"></nav>
+<div id="toast" role="status" aria-live="polite"></div></div>
+<script>
+const $=s=>document.querySelector(s),fmt=n=>'S/ '+n.toFixed(2),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ST={ezzeta:['Ezzeta','Polos y jeans · Galería Nicolini, stand 214'],norte:['Moda Norte','Blusas y vestidos · Mesa Redonda'],urban:['Urban Gamarra','Streetwear · Jr. Gamarra 650'],textiles:['Textiles Lima','Camisas formales · Jr. Antonio Bazo']};
+const SZ=['S','M','L','XL'],STK={S:20,M:12,L:0,XL:5};
+const P=[
+{id:'e1',s:'ezzeta',n:'Polo Oversize Money',c:'Polos',p:70,col:[['Negro','#1b1b1b'],['Naranja','#e8742c']],d:'Algodón Jersey Reactivo 20/1 · Tapeta de hombro a hombro · Corte oversize · Estampado discharge tacto cero'},
+{id:'e2',s:'ezzeta',n:'Polo Oversize Thunder',c:'Polos',p:70,col:[['Rojo','#c62828']],d:'Algodón Jersey Reactivo 20/1 · Corte oversize · Etiqueta de lavado exclusiva'},
+{id:'e3',s:'ezzeta',n:'Polo Oversize No Excuses',c:'Polos',p:70,col:[['Blanco','#ececec']],d:'Algodón Jersey Reactivo 20/1 · Corte oversize · Estampado frontal'},
+{id:'e4',s:'ezzeta',n:'Jean Mom Cenizo 2.0',c:'Jeans',p:85,col:[['Cenizo','#8d98a5']],d:'Denim stretch · Tiro alto · Corte mom'},
+{id:'n1',s:'norte',n:'Blusa de Lino Mar',c:'Blusas',p:59,col:[['Arena','#e7c9a9'],['Menta','#7fb3a6']],d:'Lino fresco · Manga corta'},
+{id:'u1',s:'urban',n:'Jogger Urban Flex',c:'Pantalones',p:89,col:[['Grafito','#3b3f4a']],d:'Algodón frisa · Puño elástico'},
+{id:'t1',s:'textiles',n:'Camisa Oxford Lima',c:'Camisas',p:65,col:[['Celeste','#9ec1e6']],d:'Algodón peinado · Corte regular'}];
+const pr=id=>P.find(x=>x.id===id);
+const shirt=c=>`<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M30 12l-22 14 8 14 10-5v47h48V35l10 5 8-14-22-14c-3 7-10 10-20 10s-17-3-20-10z" fill="${c}" stroke="#0002"/></svg>`;
+const S={r:'home',a:{},h:[],cart:[],orders:[],cup:null,sel:{},err:'',f:{},e:{},tab:'yape',busy:false,load:false,pe:''};
+const sub=()=>S.cart.reduce((t,i)=>t+pr(i.id).p*i.q,0),cnt=()=>S.cart.reduce((t,i)=>t+i.q,0),disc=()=>S.cup?+(sub()*.1).toFixed(2):0,SHIP=1,tot=()=>sub()-disc()+SHIP;
+const back=(t='Volver')=>`<button class="ic" data-a="back" aria-label="${t}">←</button>`;
+const prod=p=>`<button class="pc" data-a="go" data-r="detail" data-id="${p.id}"><div class="im">${shirt(p.col[0][1])}</div><div class="in"><b>${esc(p.n)}</b><span class="mut">${ST[p.s][0]}</span><div class="price">${fmt(p.p)}</div></div></button>`;
+const V={
+home:()=>`<header class="hd"><span class="logo t">Mi Gamarra</span></header><main class="mn">
+<button class="card" style="width:100%;text-align:left" data-a="tab" data-r="stores"><span class="mut">🔍 Busca polos, jeans, tiendas…</span></button>
+<div class="card" style="background:linear-gradient(120deg,var(--pri),var(--acc));color:#fff;border:0"><b style="font-size:17px">Gamarra en tu celular</b><p style="font-size:13px;margin-top:4px">Compra directo a las tiendas del emporio. Prueba el cupón <b>GAMARRA10</b>.</p></div>
+<div class="sec-t">Tiendas destacadas</div><div class="chips">${Object.keys(ST).map(k=>`<button class="chip" data-a="go" data-r="store" data-id="${k}">${ST[k][0]}</button>`).join('')}</div>
+<div class="sec-t">Novedades</div><div class="grid">${P.slice(0,4).map(prod).join('')}</div></main>`,
+stores:()=>`<header class="hd"><span class="t">Tiendas</span></header><main class="mn"><input type="search" id="q" data-f="q" placeholder="Buscar productos o tiendas" aria-label="Buscar"><div id="res" style="margin-top:12px">${res(S.f.q||'')}</div></main>`,
+store:()=>{const k=S.a.id,cat=S.a.cat||'Todos',q=(S.a.q||'').toLowerCase(),all=P.filter(p=>p.s===k),cats=['Todos',...new Set(all.map(p=>p.c))],l=all.filter(p=>(cat==='Todos'||p.c===cat)&&p.n.toLowerCase().includes(q));
+return `<header class="hd">${back()}<span class="t">${ST[k][0]}</span></header><main class="mn"><div class="mut">${ST[k][1]}</div><input type="search" data-f="sq" value="${esc(S.a.q)}" placeholder="Buscar en ${ST[k][0]}" aria-label="Buscar en la tienda" style="margin-top:8px"><div class="chips">${cats.map(c=>`<button class="chip ${c===cat?'on':''}" data-a="cat" data-c="${c}">${c}</button>`).join('')}</div>
+${S.load?`<div class="grid">${'<div class="sk"></div>'.repeat(4)}</div>`:l.length?`<div class="grid" id="sg">${l.map(prod).join('')}</div>`:`<div class="empty"><b>🧵</b>No encontramos productos con ese filtro.</div>`}</main>`},
+detail:()=>{const p=pr(S.a.id),s=S.sel,col=p.col[s.c||0],max=s.z?STK[s.z]:0;
+return `<header class="hd">${back()}<span class="t">${ST[p.s][0]}</span><button class="ic" data-a="tab" data-r="cart" aria-label="Ir al carrito">🛒</button></header><main class="mn">
+<div class="pc" style="margin-bottom:12px"><div class="im" style="aspect-ratio:1.3">${shirt(col[1])}</div></div>
+<div class="row sp"><b style="font-size:17px">${esc(p.n)}</b><span class="price" style="font-size:18px">${fmt(p.p)}</span></div><p class="mut" style="margin-top:6px">${esc(p.d)}</p>
+<div class="sec-t">Color: <span class="mut">${col[0]}</span></div><div class="row">${p.col.map((c,i)=>`<button class="sw ${i===(s.c||0)?'on':''}" style="background:${c[1]}" data-a="color" data-i="${i}" aria-label="Color ${c[0]}"></button>`).join('')}</div>
+<div class="sec-t">Talla</div><div class="row" role="group">${SZ.map(z=>`<button class="sz ${s.z===z?'on':''}" data-a="size" data-z="${z}" ${STK[z]?'':'disabled'}>${z}${STK[z]?'':'<br><small>Agotado</small>'}</button>`).join('')}</div>
+${s.z?`<div class="mut" style="margin-top:6px">${STK[s.z]} disponibles en talla ${s.z}</div>`:''}
+<div class="sec-t">Cantidad</div><div class="stp" style="width:fit-content"><button data-a="q" data-d="-1" aria-label="Menos">−</button><span>${s.q||1}</span><button data-a="q" data-d="1" aria-label="Más">+</button></div>
+${S.err?`<span class="er" role="alert">⚠ ${S.err}</span>`:''}</main><footer class="ft"><button class="btn" data-a="add">Añadir al carrito · ${fmt(p.p*(s.q||1))}</button></footer>`},
+cart:()=>`<header class="hd"><span class="t">Carrito</span><span class="mut">${cnt()} ${cnt()===1?'producto':'productos'}</span></header><main class="mn">${S.cart.length?S.cart.map((i,x)=>{const p=pr(i.id);return `<div class="card row"><div class="pc" style="width:64px;flex:none"><div class="im">${shirt(p.col[i.c][1])}</div></div><div style="flex:1"><b>${esc(p.n)}</b><div class="mut">${ST[p.s][0]} · ${p.col[i.c][0]} · Talla ${i.z}</div><div class="row sp" style="margin-top:6px"><div class="stp"><button data-a="cq" data-x="${x}" data-d="-1" aria-label="Menos">−</button><span>${i.q}</span><button data-a="cq" data-x="${x}" data-d="1" aria-label="Más">+</button></div><b>${fmt(p.p*i.q)}</b></div></div><button class="ic" data-a="del" data-x="${x}" aria-label="Quitar">🗑</button></div>`}).join(''):`<div class="empty"><b>🛒</b>Tu carrito está vacío.<br><br><button class="btn" data-a="tab" data-r="stores" style="width:auto;padding:10px 20px">Explorar tiendas</button></div>`}</main>
+${S.cart.length?`<footer class="ft"><div class="row sp" style="margin-bottom:8px"><span class="mut">Subtotal</span><b>${fmt(sub())}</b></div><button class="btn" data-a="go" data-r="checkout">Continuar (${cnt()})</button></footer>`:''}`,
+checkout:()=>{const f=S.f,e=S.e,inp=(k,l,t='text',ph='')=>`<label class="l" for="f_${k}">${l}</label><input id="f_${k}" type="${t}" data-f="${k}" value="${esc(f[k])}" placeholder="${ph}" class="${e[k]?'bad':''}">${e[k]?`<span class="er" role="alert">${e[k]}</span>`:''}`;
+return `<header class="hd">${back()}<span class="t">Finaliza tu compra</span></header><main class="mn">
+<div class="card"><b>Datos de entrega</b>${inp('name','Nombre completo','text','Ej. Ana Pérez')}${inp('phone','Celular','tel','987654321')}${inp('street','Dirección','text','Av. / Jr. y número')}${inp('dist','Distrito','text','Ej. La Victoria')}</div>
+<div class="card"><b>Cupón de descuento</b><div class="row" style="margin-top:8px"><input type="text" data-f="cup" value="${esc(f.cup)}" placeholder="GAMARRA10" aria-label="Cupón" style="text-transform:uppercase"><button class="btn sec" style="width:auto;padding:12px 16px" data-a="coupon">Aplicar</button></div>${S.pe==='c'?'<span class="er" role="alert">Cupón no válido</span>':S.cup?'<span class="ok">✓ Cupón aplicado: 10% de descuento</span>':''}</div>
+<div class="card"><b>Resumen de pedido</b><div class="mut">Entrega estimada: 3 días</div>
+<div class="row sp" style="margin-top:8px"><span>Subtotal</span><span>${fmt(sub())}</span></div>${S.cup?`<div class="row sp ok"><span>Descuento</span><span>− ${fmt(disc())}</span></div>`:''}<div class="row sp"><span>Envío</span><span>${fmt(SHIP)}</span></div><div class="row sp price" style="margin-top:6px;font-size:16px"><span>Total</span><span>${fmt(tot())}</span></div></div>
+<div class="note">🔒<span>Pagarás <b>dentro de Mi Gamarra</b> con la pasarela segura <b>izipay</b> (PCI DSS). Tus datos de pago y de entrega se envían cifrados a izipay solo para procesar el pago (Ley N.° 29733).</span></div></main>
+<footer class="ft"><button class="btn" data-a="topay">Continuar al pago · ${fmt(tot())}</button></footer>`},
+pay:()=>{const f=S.f,e=S.e,t=S.tab,inp=(k,l,ph,mx)=>`<label class="l" for="f_${k}">${l}</label><input id="f_${k}" type="text" inputmode="numeric" data-f="${k}" maxlength="${mx}" value="${esc(f[k])}" placeholder="${ph}" class="${e[k]?'bad':''}">${e[k]?`<span class="er" role="alert">${e[k]}</span>`:''}`;
+return `<header class="hd"><button class="btn ghost" style="width:auto;padding:8px 12px;font-size:13px" data-a="back">← Volver a Mi Gamarra</button><span class="logo" style="margin-left:auto;font-size:16px">Mi Gamarra</span></header><main class="mn">
+<div class="card row sp"><span class="mut">Monto a pagar</span><b style="font-size:20px">${fmt(tot())}</b></div>
+<div class="tabs" role="tablist"><button class="${t==='yape'?'on':''}" data-a="ptab" data-t="yape">Yape</button><button class="${t==='card'?'on':''}" data-a="ptab" data-t="card">Tarjeta</button></div>
+${S.pe&&S.pe!=='c'?`<div class="note" style="background:#fde8e8" role="alert">⚠ ${S.pe}</div>`:''}
+${t==='yape'?inp('yph','Celular registrado en Yape','987 654 321',11)+inp('ycode','Código de aprobación (6 dígitos)','••••••',6)+'<div class="hint">Encuéntralo en tu app de Yape. Verifica que “Compras por internet” esté activo.<br>Prueba: cualquier celular 9xx y código 123456 · código 000000 = error.</div>':inp('cn','Número de tarjeta (Visa, Mastercard, Diners, Amex)','1234 5678 9012 3456',19)+inp('cname','Nombre en la tarjeta','Como figura en la tarjeta',40).replace('inputmode="numeric"','')+'<div class="row"><div>'+inp('cexp','Vence (MM/AA)','08/29',5)+'</div><div>'+inp('ccvv','CVV','123',4)+'</div></div><div class="hint">Prueba: 4111 1111 1111 1111 · rechazo: 4000 0000 0000 0002</div>'}
+<div class="note" style="margin-top:12px">🔒<span>Pasarela segura <b>izipay · PCI DSS</b>. No guardamos los datos de tu tarjeta.</span></div></main>
+<footer class="ft"><button class="btn" data-a="pay">Pagar ${fmt(tot())}</button></footer>${S.busy?'<div class="ov"><div><div class="spin"></div>Procesando pago seguro…</div></div>':''}`},
+done:()=>{const o=S.orders[0];return `<main class="mn" style="text-align:center"><div class="ok-ring">✓</div><h2>¡Pedido confirmado!</h2><p class="mut">Pedido N.° <b>${o.id}</b> · Te enviaremos novedades al ${esc(o.ph)}</p><div class="card" style="text-align:left;margin-top:16px">${o.items.map(i=>`<div class="row sp"><span>${i.q}× ${esc(i.n)} (${i.z})</span><span>${fmt(i.t)}</span></div>`).join('')}<hr style="border:0;border-top:1px solid var(--bd);margin:8px 0"><div class="row sp price"><span>Total pagado</span><span>${fmt(o.t)}</span></div></div><div class="mut">Entrega estimada: 3 días · ${esc(o.ad)}</div></main><footer class="ft"><button class="btn" data-a="tab" data-r="home">Seguir comprando</button></footer>`},
+account:()=>`<header class="hd"><span class="t">Mi cuenta</span></header><main class="mn"><div class="sec-t" style="margin-top:0">Mis pedidos</div>${S.orders.length?S.orders.map(o=>`<div class="card"><div class="row sp"><b>Pedido ${o.id}</b><span class="ok">Confirmado</span></div><div class="mut">${o.items.map(i=>i.q+'× '+esc(i.n)).join(', ')}</div><div class="price">${fmt(o.t)}</div></div>`).join(''):'<div class="empty"><b>📦</b>Aún no tienes pedidos.</div>'}</main>`};
+function res(q){q=q.toLowerCase();const s=Object.keys(ST).filter(k=>ST[k][0].toLowerCase().includes(q)),p=P.filter(x=>x.n.toLowerCase().includes(q));
+if(!s.length&&!p.length)return `<div class="empty"><b>🔎</b>Sin resultados para “${esc(q)}”.<br>Prueba con “polo” o “jean”.</div>`;
+return (s.length?'<div class="sec-t" style="margin-top:0">Tiendas</div>'+s.map(k=>`<button class="card" style="width:100%;text-align:left" data-a="go" data-r="store" data-id="${k}"><b>${ST[k][0]}</b><div class="mut">${ST[k][1]}</div></button>`).join(''):'')+(p.length?'<div class="sec-t">Productos</div><div class="grid">'+p.map(prod).join('')+'</div>':'')}
+function render(){const m=$('#scr .mn'),y=m?m.scrollTop:0;$('#scr').innerHTML=V[S.r]();const n=$('#scr .mn');if(n&&S.keep)n.scrollTop=y;S.keep=0;
+const tabs=[['home','🏠','Inicio'],['stores','🔍','Tiendas'],['cart','🛒','Carrito'],['account','👤','Mi cuenta']],show=['home','stores','store','detail','cart','account'].includes(S.r);
+$('#nav').style.display=show?'flex':'none';const act=S.r==='store'||S.r==='detail'?'stores':S.r;
+$('#nav').innerHTML=tabs.map(t=>`<button class="${t[0]===act?'on':''}" data-a="tab" data-r="${t[0]}"><i>${t[1]}</i>${t[2]}${t[0]==='cart'&&cnt()?`<i class="bdg" id="bdg">${cnt()}</i>`:''}</button>`).join('')}
+function go(r,a={}){S.h.push([S.r,S.a]);S.r=r;S.a=a;S.e={};S.err='';S.pe='';if(r==='detail')S.sel={c:0,q:1};if(r==='checkout')S.f.cup='';
+if(r==='store'){S.load=true;setTimeout(()=>{S.load=false;if(S.r==='store')render()},500)}render()}
+let tt;function toast(m,act){const t=$('#toast');t.innerHTML=`<span>✓</span><span>${m}</span>${act?'<button data-a="tab" data-r="cart">Ver carrito</button>':''}`;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),3200)}
+const luhn=n=>{let s=0,d=false;for(let i=n.length-1;i>=0;i--){let k=+n[i];if(d){k*=2;if(k>9)k-=9}s+=k;d=!d}return s%10===0};
+const A={
+go:d=>go(d.r,{id:d.id}),
+back:()=>{const h=S.h.pop();if(h){S.r=h[0];S.a=h[1]}else{S.r='home'}S.e={};S.pe='';S.err='';render()},
+tab:d=>{S.h=[];S.r=d.r;S.a={};S.e={};$('#toast').classList.remove('show');render()},
+cat:d=>{S.a.cat=d.c;S.keep=1;render()},
+color:d=>{S.sel.c=+d.i;S.keep=1;render()},size:d=>{S.sel.z=d.z;S.sel.q=Math.min(S.sel.q||1,STK[d.z]);S.err='';S.keep=1;render()},
+q:d=>{const m=S.sel.z?STK[S.sel.z]:10;S.sel.q=Math.max(1,Math.min(m,(S.sel.q||1)+ +d.d));S.keep=1;render()},
+add:()=>{if(!S.sel.z){S.err='Selecciona una talla para continuar.';S.keep=1;render();return}
+const id=S.a.id,c=S.sel.c||0,z=S.sel.z,q=S.sel.q||1,ex=S.cart.find(i=>i.id===id&&i.c===c&&i.z===z);
+if(ex){if(ex.q+q>STK[z]){S.err=`Solo hay ${STK[z]} unidades en talla ${z}.`;S.keep=1;render();return}ex.q+=q}else S.cart.push({id,c,z,q});
+S.err='';S.keep=1;render();const b=$('#bdg');b&&b.classList.add('bump');toast(`${q} × ${pr(id).n} añadido al carrito`,1)},
+cq:d=>{const i=S.cart[+d.x],n=i.q+ +d.d;if(n<1)return;if(n>STK[i.z]){toast(`Máximo ${STK[i.z]} unidades disponibles`);return}i.q=n;S.keep=1;render()},
+del:d=>{const [r]=S.cart.splice(+d.x,1);S.keep=1;render();toast(`${pr(r.id).n} eliminado`)},
+coupon:()=>{const v=(S.f.cup||'').trim().toUpperCase();if(v==='GAMARRA10'){S.cup=v;S.pe=''}else{S.cup=null;S.pe='c'}S.keep=1;render()},
+topay:()=>{const f=S.f,e={};if(!(f.name||'').trim())e.name='Ingresa tu nombre completo.';if(!/^9\d{8}$/.test((f.phone||'').replace(/\s/g,'')))e.phone='Ingresa un celular válido de 9 dígitos (empieza con 9).';if(!(f.street||'').trim())e.street='Ingresa tu dirección de entrega.';if(!(f.dist||'').trim())e.dist='Ingresa tu distrito.';
+S.e=e;if(Object.keys(e).length){S.keep=1;render();return}S.f.cn=S.f.cname=S.f.cexp=S.f.ccvv=S.f.yph=S.f.ycode='';go('pay')},
+ptab:d=>{S.tab=d.t;S.e={};S.pe='';S.keep=1;render()},
+pay:()=>{const f=S.f,e={};
+if(S.tab==='yape'){if(!/^9\d{8}$/.test((f.yph||'').replace(/\s/g,'')))e.yph='Ingresa tu celular de Yape (9 dígitos).';if(!/^\d{6}$/.test(f.ycode||''))e.ycode='El código tiene 6 dígitos.'}
+else{const n=(f.cn||'').replace(/\s/g,'');if(n.length<13||!luhn(n))e.cn='Número de tarjeta no válido.';if(!(f.cname||'').trim())e.cname='Ingresa el nombre de la tarjeta.';const m=/^(\d\d)\/(\d\d)$/.exec(f.cexp||'');if(!m||+m[1]<1||+m[1]>12||(2000+ +m[2])*12+ +m[1]<new Date().getFullYear()*12+new Date().getMonth()+1)e.cexp='Fecha inválida o vencida.';if(!/^\d{3,4}$/.test(f.ccvv||''))e.ccvv='CVV de 3 o 4 dígitos.'}
+S.e=e;S.pe='';if(Object.keys(e).length){S.keep=1;render();return}
+S.busy=true;render();setTimeout(()=>{S.busy=false;const bad=S.tab==='yape'?f.ycode==='000000':(f.cn||'').replace(/\s/g,'')==='4000000000000002';
+if(bad){S.pe=S.tab==='yape'?'Código de aprobación inválido o vencido. Genera uno nuevo en Yape.':'Tu banco rechazó la tarjeta. Prueba con otra o usa Yape.';render();return}
+S.orders.unshift({id:'24'+Math.floor(1e5+Math.random()*9e5),t:tot(),ph:f.phone,ad:f.street+', '+f.dist,items:S.cart.map(i=>({n:pr(i.id).n,z:i.z,q:i.q,t:pr(i.id).p*i.q}))});S.cart=[];S.cup=null;S.h=[];S.r='done';render()},1800)}};
+document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(t&&!t.disabled)A[t.dataset.a](t.dataset)});
+document.addEventListener('input',e=>{const k=e.target.dataset.f;if(!k)return;let v=e.target.value;
+if(k==='cn'){v=v.replace(/\D/g,'').slice(0,16).replace(/(.{4})/g,'$1 ').trim();e.target.value=v}
+if(k==='cexp'){v=v.replace(/\D/g,'').slice(0,4);if(v.length>2)v=v.slice(0,2)+'/'+v.slice(2);e.target.value=v}
+if(['ccvv','ycode'].includes(k)){v=v.replace(/\D/g,'');e.target.value=v}
+S.f[k]=v;if(k==='q')$('#res').innerHTML=res(v);if(k==='sq'){S.a.q=v;const g=V.store(),d=document.createElement('div');d.innerHTML=g;const n=d.querySelector('.mn').lastElementChild,o=$('#scr .mn').lastElementChild;o.replaceWith(n)}});
+render();
+</script>
+</body>
+</html>
